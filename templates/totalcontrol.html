@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>아두이노 실시간 온습도계</title>
+        <link rel="stylesheet" href="./style.css">
+    </head>
+    <body>
+        <div class="navbr">
+            <ul>
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#auto">auto</a></li>
+                <li><a href="#우리집온도">우리집온도</a></li>
+                <li><a href="#우리집습도">우리집습도</a></li>
+            </ul>
+            <div class="contaner" id="home">
+                효제네 온습도계
+            </div>
+            <div class="contaner" id="control">
+                <a href="http://192.168.25.54/total/1">앞</a>
+                <div class="contaner-senter">
+                    <a href="http://192.168.25.54/total/2">오른쪽</a>
+                    <a href="http://192.168.25.54/total/3">왼쪽</a>
+                </div>
+                <a href="http://192.168.25.54/total/4">뒤</a>
+                <div class="container-auto">
+                    <a href="http://192.168.25.54/total/5">오토모드</a>
+                </div>
+            </div>
+            <div class="contaner" id="전국">
+                
+            </div>
+            <div class="contaner" id="우리집온도">온도{{temp}}</div>
+            <div class="contaner" id="우리집습도">습도{{humidity}}</div>
+            
+        </div>
+    </body>   
+</html>

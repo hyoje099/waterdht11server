@@ -2,60 +2,52 @@
 
 #include <ESP8266WiFi.h>
 #include <ESP8266WiFiMulti.h>
-
+#include <DHT.h>
 #include <ESP8266HTTPClient.h>
-#include <DHT11.h>
-#include<DHT.h>
+
 #include <WiFiClient.h>
 #define pinDHT 2
 #define DHTTYPE DHT11
 DHT dht (pinDHT,DHTTYPE);
 ESP8266WiFiMulti WiFiMulti;
-String tempserverName = "http://192.168.25.54:8000/temp/";
-String serverName = "http://192.168.25.54:8000";
-
-String lcdname = "/lcd/";
-String Humidity = "/Humidity/";
-
+String serverName = "http://192.168.25.54/";
+String Humidity="humidity/";
+String Temp="temp/";
+String Control="control";
+int humidity=0;
+int temp=0
 char link;
 void setup() {
-  
-  // put your setup code here, to run once:
+
   Serial.begin(115200);
-  
+  // Serial.setDebugOutput(true);
 
   Serial.println();
   Serial.println();
   Serial.println();
 
   for (uint8_t t = 4; t > 0; t--) {
-    Serial.printf("[SETUP] WAIT %d...\n", t);
+    Serial.printf("%d second\n", t);
     Serial.flush();
     delay(1000);
   }
-
   WiFi.mode(WIFI_STA);
   WiFiMulti.addAP("SK_WiFi4FED", "1402033324");
+
 }
-void loop() {
+void loop(){
   int h=dht.readHumidity();
   int t=dht.readTemperature();
-  
-  if ((WiFiMulti.run() == WL_CONNECTED)) {
-
+  if((WiFiMulti.run() == WL_COMMECTED)){
     WiFiClient client;
 
    
    
       HTTPClient http;
-
       Serial.print("[HTTP] begin...\n");
-      
-      String serverPathtemp = tempserverName + t ;
-      
-      String serverPathumidity=serverName+h;
-      
-      if (http.begin(client, serverPathumidity.c_str())) {  // HTTP
+      String serverh =serverName + Humidity +h;
+      delay(100);
+      if (http.begin(client, serverh.c_str())) {  // HTTP
 
 
         Serial.print("[HTTP] GET...\n");
@@ -73,29 +65,36 @@ void loop() {
           Serial.println(payload);
         }
       } else {
-        Serial.println(serverPathumidity.c_str());
-        Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+        Serial.println(serverh.c_str());
+        Serial.printf("[h] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
       }
+    http.end();  
+  }else {
+    Serial.println(serverh.c_str());
+    Serial.printf("[h} Unable to connect\n");
+  }
+      
+  }
+  if((WiFiMulti.run() == WL_COMMECTED)){
+    WiFiClient client;
 
-      http.end();
-    } else {
-      Serial.println(serverPathumidity.c_str());
-      Serial.printf("[HTTP} Unable to connect\n");
-    }
-    
-    
+   
+   
+      HTTPClient http;
+      Serial.print("[HTTP] begin...\n");
+      String servert =serverName + temp +t;
+      delay(100);
+      if (http.begin(client, serverh.t_str())) {  // HTTP
 
-     delay(100);
 
-    if (http.begin(client, serverPathtemp.c_str())) {  // HTTP
-        Serial.print("[HTTP] GET...\n");
+        Serial.print("[t] GET...\n");
       // start connection and send HTTP header
         int httpCode = http.GET();
 
       // httpCode will be negative on error
         if (httpCode > 0) {
         // HTTP header has been send and Server response header has been handled
-          Serial.printf("[HTTP] GET... code: %d\n", httpCode);
+          Serial.printf("[t] GET... code: %d\n", httpCode);
 
         // file found at server
         if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
@@ -103,19 +102,14 @@ void loop() {
           Serial.println(payload);
         }
       } else {
-        Serial.println(serverPathtemp.c_str());
-        Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+        Serial.println(servert.c_str());
+        Serial.printf("[h] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
       }
-
-      http.end();
-    } else {
-      Serial.println(serverPathtemp.c_str());
-      Serial.printf("[HTTP} Unable to connect\n");
-    }
-    
-    
-
-     delay(100);
-    
-}
+    http.end();  
+  }else {
+    Serial.println(servert.c_str());
+    Serial.printf("[t} Unable to connect\n");
+  }
+      
+  }
 }

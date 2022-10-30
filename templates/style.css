@@ -1,0 +1,41 @@
+#home{
+    background: linear-gradient(-135deg, #FF0000, #9A2EFE);
+    font-size: 500%;
+    color: white;
+    
+}
+#intro{
+    background: linear-gradient(45deg, Violet, Orange);
+    font-size: 1cm;
+}
+#like{
+    background-color: red;
+    flex-wrap: wrap;
+    
+}
+.container{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ul{
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+}
+li{
+    padding: 20px;
+}
+.navbar{
+    background-color: green;
+    position: fixed;
+    width: 100vw;
+}
+a.ex2 {
+    display: block;
+    width: 133px;
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+}
