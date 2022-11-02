@@ -8,14 +8,14 @@ from urllib import response
 from fastapi import FastAPI,Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-
+from fastapi.staticfiles import StaticFiles
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
 
 app = FastAPI()
 template = Jinja2Templates(directory="templates")
-
+app.mount("/static", StaticFiles(directory="static"), name="static") 
 
 @app.get("/",response_class=HTMLResponse)
 def read_root(request: Request):
@@ -35,11 +35,15 @@ def read_t(request: Request,temps: int):
     
     return template.TemplateResponse("./temp.html",{"request":request,"temps":temps})
 
-@app.get("/humidity/{humiditys}",response_class=HTMLResponse)
-def read_h(request: Request,humiditys: int):
+@app.get("/humidity/{humiditys}/temp/{temps}",response_class=HTMLResponse)
+def read_h(request: Request,humiditys: int,temps: int):
     ref = db.reference(f"/humidity")
     ref.set(f"{humiditys}")
-    return template.TemplateResponse("./humidity.html",{"request":request,"humidity":humiditys})
+    ref = db.reference(f"/temp")
+    ref.set(f"{temps}")
+    ref=db.reference(f"/control")
+    control=ref.get()
+    return template.TemplateResponse("./index.html",{"request":request,"humidity":humiditys,"temps":temps,"control":control})
 
 @app.get("/total/{control}",response_class=HTMLResponse)
 def read_total(request: Request,control:int):

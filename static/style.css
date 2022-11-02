@@ -32,10 +32,12 @@ li{
     position: fixed;
     width: 100vw;
 }
-a.ex2 {
-    display: block;
-    width: 133px;
-    height: 60px;
-    text-align: center;
-    line-height: 60px;
+#auto{
+    height: 100vh;
+}
+#control{
+    height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
 }
